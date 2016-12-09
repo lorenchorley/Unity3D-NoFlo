@@ -1,0 +1,120 @@
+{
+  "properties": {},
+  "exports": [],
+  "processes": {
+    "ButtonPress": {
+      "component": "systems/ButtonPress",
+      "metadata": {
+        "x": -150,
+        "y": -50
+      }
+    },
+    "DoorControls": {
+      "component": "systems/DoorControls",
+      "metadata": {
+        "x": 150,
+        "y": 50
+      }
+    },
+    "Output": {
+      "component": "core/OutputToConsole",
+      "metadata": {
+        "x": 250,
+        "y": -50
+      }
+    },
+    "Combine": {
+      "component": "core/CombineStrings",
+      "metadata": {
+        "x": 150,
+        "y": -50
+      }
+    },
+    "Send": {
+      "component": "core/Send",
+      "metadata": {
+        "x": 150,
+        "y": -50
+      }
+    }
+  },
+  "connections": [
+    {
+      "src": {
+        "process": "ButtonPress",
+        "port": "OnPress"
+      },
+      "tgt": {
+        "process": "DoorControls",
+        "port": "Toggle"
+      }
+    },
+    {
+      "src": {
+        "process": "DoorControls",
+        "port": "State"
+      },
+      "tgt": {
+        "process": "Combine",
+        "port": "Second"
+      }
+    },
+    {
+      "src": {
+        "process": "Combine",
+        "port": "Out"
+      },
+      "tgt": {
+        "process": "Output",
+        "port": "In"
+      }
+    },
+    {
+      "src": {
+        "process": "DoorControls",
+        "port": "State"
+      },
+      "tgt": {
+        "process": "Send",
+        "port": "Send"
+      }
+    },
+    {
+      "src": {
+        "process": "Send",
+        "port": "Out"
+      },
+      "tgt": {
+        "process": "Combine",
+        "port": "First"
+      }
+    },
+    {
+      "data": {
+        "type": "Door",
+        "id" :  "Door1"
+      },
+      "tgt": {
+        "process": "DoorControls",
+        "port": "Door"
+      }
+    },
+    {
+      "data": "The door is now ",
+      "tgt": {
+        "process": "Send",
+        "port": "Object"
+      }
+    },
+    {
+      "data": {
+        "type": "Button",
+        "id" :  "Button1"
+      },
+      "tgt": {
+        "process": "ButtonPress",
+        "port": "Button"
+      }
+    }
+  ]
+}
