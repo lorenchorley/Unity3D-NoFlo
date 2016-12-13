@@ -1,24 +1,32 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class DebugMessageVisualisation : Visualisation {
+namespace NoFloEditor {
 
-    public Text Text;
+    public class DebugMessageVisualisation : Visualisation {
 
-    public void SetMessage(string message) {
-        Text.text = message;
-    }
+        public Text Text;
+        public Text Quantity;
 
-    public void Setup(string message, Transform target) {
-        Text.text = message;
-        transform.SetParent(target);
-        transform.localPosition = Vector3.zero;
-    }
+        public void SetMessage(string message) {
+            Text.text = message;
+        }
 
-    public override void Select() {
-    }
+        public void SetQuantity(int n) {
+            Quantity.text = n.ToString();
+        }
 
-    public override void Deselect() {
+        public void Setup(Transform target) {
+            transform.SetParent(target);
+            transform.localPosition = Vector3.zero;
+        }
+
+        public override void Select() {
+        }
+
+        public override void Deselect() {
+        }
+
     }
 
 }

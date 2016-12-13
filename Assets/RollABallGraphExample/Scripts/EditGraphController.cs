@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using NoFlo_Basic;
+using NoFloEditor;
+using UnityEngine;
 
 public class EditGraphController : MonoBehaviour {
 

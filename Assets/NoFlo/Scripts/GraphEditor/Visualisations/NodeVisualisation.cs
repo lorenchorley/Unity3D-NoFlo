@@ -1,95 +1,100 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFlo_Basic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NodeVisualisation : Visualisation {
+namespace NoFloEditor {
 
-    public string NodeName;
+    public class NodeVisualisation : Visualisation {
 
-    public Text ComponentName;
-    public Text ComponentQualifiedName;
-    public InputField InputField;
-    public RectTransform InPortContainer;
-    public RectTransform OutPortContainer;
+        public string NodeName;
 
-    public List<PortVisualisation> InPortVisualisations;
-    public List<PortVisualisation> OutPortVisualisations;
+        public Text ComponentName;
+        public Text ComponentQualifiedName;
+        public InputField InputField;
+        public RectTransform InPortContainer;
+        public RectTransform OutPortContainer;
 
-    public Component Component;
+        public List<PortVisualisation> InPortVisualisations;
+        public List<PortVisualisation> OutPortVisualisations;
 
-    [Serializable]
-    public class SelectionOptions {
-        public Image Image;
-        public Color Selected;
+        public NoFlo_Basic.Component Component;
 
-        [NonSerialized]
-        public Color Unhighlighted;
+        [Serializable]
+        public class SelectionOptions {
+            public Image Image;
+            public Color Selected;
 
-    }
-    public SelectionOptions Selection;
+            [NonSerialized]
+            public Color Unhighlighted;
 
-    [Serializable]
-    public class DebugOptions {
-        public Color Highlighted;
+        }
+        public SelectionOptions Selection;
 
-    }
-    public DebugOptions Debug;
+        [Serializable]
+        public class DebugOptions {
+            public Color Highlighted;
 
-    void Start() {
-        //RectTransform rect = GetComponent<RectTransform>();
-        //rect.sizeDelta = new Vector2(100,50);
-        Selection.Unhighlighted = Selection.Image.color;
-    }
+        }
+        public DebugOptions Debug;
 
-    public override void Select() {
-        Selection.Image.color = Selection.Selected;
-    }
-
-    public override void Deselect() {
-        Selection.Image.color = Selection.Unhighlighted;
-    }
-
-    public void DebugHighlight(bool enable) {
-        Selection.Image.color = enable ? Debug.Highlighted : Selection.Unhighlighted;
-    }
-
-    public void SetName(string name) {
-        ComponentName.text = name;
-    }
-
-    public void SetupWithComponent(Component component) {
-        this.Component = component;
-
-        SetName(component.ComponentName);
-        ComponentQualifiedName.text = ComponentCatalog.RequestQualifedNameByComponentType()[component.GetType()];
-
-        InPortVisualisations = new List<PortVisualisation>();
-        foreach (InPort p in component.Input.GetPorts()) {
-            if (p.Hidden)
-                continue;
-
-            GameObject newPort = Instantiate<GameObject>(Graph.GraphEditor.Templates.PortTemplate);
-            PortVisualisation v = newPort.GetComponent<PortVisualisation>();
-            InPortVisualisations.Add(v);
-            newPort.transform.SetParent(InPortContainer);
-            p.Visualisation = v;
-            v.Port = p;
-            v.Graph = Component.Graph;
+        void Start() {
+            //RectTransform rect = GetComponent<RectTransform>();
+            //rect.sizeDelta = new Vector2(100,50);
+            Selection.Unhighlighted = Selection.Image.color;
         }
 
-        OutPortVisualisations = new List<PortVisualisation>();
-        foreach (OutPort p in component.Output.GetPorts()) {
-            if (p.Hidden)
-                continue;
+        public override void Select() {
+            Selection.Image.color = Selection.Selected;
+        }
 
-            GameObject newPort = Instantiate<GameObject>(Graph.GraphEditor.Templates.PortTemplate);
-            PortVisualisation v = newPort.GetComponent<PortVisualisation>();
-            OutPortVisualisations.Add(v);
-            newPort.transform.SetParent(OutPortContainer);
-            p.Visualisation = v;
-            v.Port = p;
-            v.Graph = Component.Graph;
+        public override void Deselect() {
+            Selection.Image.color = Selection.Unhighlighted;
+        }
+
+        public void DebugHighlight(bool enable) {
+            Selection.Image.color = enable ? Debug.Highlighted : Selection.Unhighlighted;
+        }
+
+        public void SetName(string name) {
+            ComponentName.text = name;
+        }
+
+        public void SetupWithComponent(NoFlo_Basic.Component component) {
+            this.Component = component;
+
+            SetName(component.ComponentName);
+            ComponentQualifiedName.text = ComponentCatalog.RequestQualifedNameByComponentType()[component.GetType()];
+
+            InPortVisualisations = new List<PortVisualisation>();
+            foreach (NoFlo_Basic.InPort p in component.Input.GetPorts()) {
+                if (p.Hidden)
+                    continue;
+
+                GameObject newPort = Instantiate<GameObject>(Graph.GraphEditor.Templates.PortTemplate);
+                PortVisualisation v = newPort.GetComponent<PortVisualisation>();
+                InPortVisualisations.Add(v);
+                newPort.transform.SetParent(InPortContainer);
+                p.Visualisation = v;
+                v.Port = p;
+                v.Graph = Component.Graph;
+            }
+
+            OutPortVisualisations = new List<PortVisualisation>();
+            foreach (NoFlo_Basic.OutPort p in component.Output.GetPorts()) {
+                if (p.Hidden)
+                    continue;
+
+                GameObject newPort = Instantiate<GameObject>(Graph.GraphEditor.Templates.PortTemplate);
+                PortVisualisation v = newPort.GetComponent<PortVisualisation>();
+                OutPortVisualisations.Add(v);
+                newPort.transform.SetParent(OutPortContainer);
+                p.Visualisation = v;
+                v.Port = p;
+                v.Graph = Component.Graph;
+            }
+
         }
 
     }

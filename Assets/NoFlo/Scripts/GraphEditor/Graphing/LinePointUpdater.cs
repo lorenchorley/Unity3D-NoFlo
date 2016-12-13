@@ -1,37 +1,41 @@
 ﻿using geniikw;
 using UnityEngine;
 
-public class LinePointUpdater : MonoBehaviour {
+namespace NoFloEditor {
 
-    private UIMeshLine Line;
-    private int Index;
-    private Vector3 StaticOffset;
-    private Transform DynamicOffset;
+    public class LinePointUpdater : MonoBehaviour {
 
-    private LinePoint lp;
+        private UIMeshLine Line;
+        private int Index;
+        private Vector3 StaticOffset;
+        private Transform DynamicOffset;
 
-    void Update() {
-        UpdateLP(); // TODO optimise
-    }
+        private LinePoint lp;
 
-    public void UpdateLP() {
-        try { 
-            lp = Line.points[Index];
-        } catch (MissingReferenceException) {
-            Destroy(this);
-            return;
+        void Update() {
+            UpdateLP(); // TODO optimise
         }
-        lp.point = transform.position + StaticOffset - DynamicOffset.position;
-        Line.points[Index] = lp;
-    }
 
-    public void Setup(UIMeshLine Line, int index, Vector3 StaticOffset, Transform DynamicOffset, LinePointManager manager) {
-        this.Line = Line;
-        this.Index = index;
-        this.StaticOffset = StaticOffset;
-        this.DynamicOffset = DynamicOffset;
+        public void UpdateLP() {
+            try {
+                lp = Line.points[Index];
+            } catch (MissingReferenceException) {
+                Destroy(this);
+                return;
+            }
+            lp.point = transform.position + StaticOffset - DynamicOffset.position;
+            Line.points[Index] = lp;
+        }
 
-        manager.RegisterUpdater(this);
+        public void Setup(UIMeshLine Line, int index, Vector3 StaticOffset, Transform DynamicOffset, LinePointManager manager) {
+            this.Line = Line;
+            this.Index = index;
+            this.StaticOffset = StaticOffset;
+            this.DynamicOffset = DynamicOffset;
+
+            manager.RegisterUpdater(this);
+
+        }
 
     }
 

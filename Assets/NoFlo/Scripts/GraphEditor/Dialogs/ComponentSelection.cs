@@ -3,16 +3,20 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class ComponentSelection : MonoBehaviour {
+namespace NoFloEditor {
 
-    public Text TitleText;
-    public Button Button;
-    public Type ComponentType;
+    public class ComponentSelection : MonoBehaviour {
 
-    public void Setup(string Title, Type ComponentType, UnityAction action) {
-        TitleText.text = Title;
-        this.ComponentType = ComponentType;
-        Button.onClick.AddListener(action);
+        public Text TitleText;
+        public Button Button;
+        public Type ComponentType;
+
+        public void Setup(string Title, Type ComponentType, UnityAction action) {
+            TitleText.text = Title;
+            this.ComponentType = ComponentType;
+            Button.onClick.AddListener(action);
+        }
+
     }
 
 }

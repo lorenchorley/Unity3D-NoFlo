@@ -1,49 +1,54 @@
-﻿using UnityEngine;
+﻿using NoFlo_Basic;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class DebugButton : MonoBehaviour {
+namespace NoFloEditor {
 
-    public Graph Graph;
-    public GraphEditor GraphEditor;
+    public class DebugButton : MonoBehaviour {
 
-    private Text Text;
-    private bool initialised = false;
+        public Graph Graph;
+        public GraphEditor GraphEditor;
 
-    private void Init() {
-        if (initialised)
-            return;
+        private Text Text;
+        private bool initialised = false;
 
-        Text = GetComponentInChildren<Text>();
-        GetComponent<Button>().onClick.AddListener(() => {
-            if (Text.text == "Debug") {
-                Text.text = "Stop";
+        private void Init() {
+            if (initialised)
+                return;
 
-                Graph.EnableDebug();
-                Graph.Run();
+            Text = GetComponentInChildren<Text>();
+            GetComponent<Button>().onClick.AddListener(() => {
+                if (Text.text == "Debug") {
+                    Text.text = "Stop";
 
-            } else {
-                Graph.ForceStop();
-                //Text.text = "Debug";
-            }
+                    Graph.EnableDebug();
+                    Graph.Run();
 
-        });
+                } else {
+                    Graph.ForceStop();
+                    //Text.text = "Debug";
+                }
 
-        initialised = true;
-    }
-    
-    public void SetGraph(Graph Graph) {
-        this.Graph = Graph;
-        Init();
+            });
 
-        if (Graph.IsRunning() && Graph.InDebugMode()) {
-            Text.text = "Stop";
-        } else {
-            Text.text = "Debug";
+            initialised = true;
         }
 
-        Graph.DebugExecutor.OnStop.AddListener(() => {
-            Text.text = "Debug";
-        });
+        public void SetGraph(Graph Graph) {
+            this.Graph = Graph;
+            Init();
+
+            if (Graph.IsRunning() && Graph.InDebugMode()) {
+                Text.text = "Stop";
+            } else {
+                Text.text = "Debug";
+            }
+
+            Graph.DebugExecutor.OnStop.AddListener(() => {
+                Text.text = "Debug";
+            });
+
+        }
 
     }
 

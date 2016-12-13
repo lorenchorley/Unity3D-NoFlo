@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿using NoFlo_Basic;
+using UnityEngine;
 
-public abstract class Visualisation : MonoBehaviour {
+namespace NoFloEditor {
 
-    public Graph Graph;
+    public abstract class Visualisation : MonoBehaviour {
 
-    public abstract void Select();
-    public abstract void Deselect();
+        public Graph Graph;
+
+        public abstract void Select();
+        public abstract void Deselect();
+
+    }
 
 }

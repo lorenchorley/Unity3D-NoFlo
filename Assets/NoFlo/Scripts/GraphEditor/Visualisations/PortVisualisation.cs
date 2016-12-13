@@ -1,16 +1,21 @@
-﻿
-public class PortVisualisation : Visualisation {
+﻿using NoFlo_Basic;
 
-    public Port Port;
+namespace NoFloEditor {
 
-    public void DebugHighlight(bool enable) {
+    public class PortVisualisation : Visualisation {
 
-    }
+        public Port Port;
 
-    public override void Select() {
-    }
+        public void DebugHighlight(bool enable) {
 
-    public override void Deselect() {
+        }
+
+        public override void Select() {
+        }
+
+        public override void Deselect() {
+        }
+
     }
 
 }

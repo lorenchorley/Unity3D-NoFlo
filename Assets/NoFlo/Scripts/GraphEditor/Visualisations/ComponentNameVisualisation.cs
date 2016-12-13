@@ -1,30 +1,35 @@
-﻿using UnityEngine.UI;
+﻿using NoFlo_Basic;
+using UnityEngine.UI;
 
-public class ComponentNameVisualisation : Visualisation {
+namespace NoFloEditor {
 
-    public Component Component;
-    public InputField InputField;
+    public class ComponentNameVisualisation : Visualisation {
 
-    void Start() {
-        InputField.onEndEdit.AddListener((s) => OnEndEdit(s));
-    }
+        public Component Component;
+        public InputField InputField;
 
-    void OnEndEdit(string s) {
-        if (s != "") {
-            Component.SetName(s);
+        void Start() {
+            InputField.onEndEdit.AddListener((s) => OnEndEdit(s));
         }
-        InputField.gameObject.SetActive(false);
-    }
 
-    public void StartEdit() {
-        InputField.gameObject.SetActive(true);
-        InputField.Select();
-    }
+        void OnEndEdit(string s) {
+            if (s != "") {
+                Component.SetName(s);
+            }
+            InputField.gameObject.SetActive(false);
+        }
 
-    public override void Select() {
-    }
+        public void StartEdit() {
+            InputField.gameObject.SetActive(true);
+            InputField.Select();
+        }
 
-    public override void Deselect() {
+        public override void Select() {
+        }
+
+        public override void Deselect() {
+        }
+
     }
 
 }

@@ -1,31 +1,36 @@
-﻿using System;
+﻿using NoFlo_Basic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RemoveButton : MonoBehaviour {
+namespace NoFloEditor {
 
-    public Graph Graph;
-    public GraphEditor GraphEditor;
-    public GraphEditor MouseManager;
+    public class RemoveButton : MonoBehaviour {
 
-    void Start() {
+        public Graph Graph;
+        public GraphEditor GraphEditor;
+        public GraphEditor MouseManager;
 
-        if (MouseManager == null) {
-            MouseManager = GameObject.FindObjectOfType<GraphEditor>();
-            if (MouseManager == null)
-                throw new Exception("");
+        void Start() {
+
+            if (MouseManager == null) {
+                MouseManager = GameObject.FindObjectOfType<GraphEditor>();
+                if (MouseManager == null)
+                    throw new Exception("");
+            }
+
+            GetComponent<Button>().onClick.AddListener(() => {
+                if (MouseManager.selected != null && MouseManager.selected is NodeVisualisation)
+                    Graph.RemoveNode((MouseManager.selected as NodeVisualisation).Component);
+            });
+
         }
 
-        GetComponent<Button>().onClick.AddListener(() => {
-            if (MouseManager.selected != null && MouseManager.selected is NodeVisualisation)
-                Graph.RemoveNode((MouseManager.selected as NodeVisualisation).Component);
-        });
+        public void SetGraph(Graph Graph) {
+            this.Graph = Graph;
+        }
+
 
     }
-
-    public void SetGraph(Graph Graph) {
-        this.Graph = Graph;
-    }
-
 
 }

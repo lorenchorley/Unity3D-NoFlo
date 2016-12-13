@@ -1,54 +1,59 @@
-﻿using UnityEngine;
+﻿using NoFlo_Basic;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class PortInfo : MonoBehaviour {
+namespace NoFloEditor {
 
-    public bool IsInPort;
-    public Text PortName;
-    public Text PortType;
-    public InputField DefaultValue;
-    public Button SelectVariable;
+    public class PortInfo : MonoBehaviour {
 
-    public Port Port;
+        public bool IsInPort;
+        public Text PortName;
+        public Text PortType;
+        public InputField DefaultValue;
+        public Button SelectVariable;
 
-    DefaultValue dv;
+        public Port Port;
 
-    public void Setup(InPort p, NodeInfoDialog NodeInfoDialog) {
-        Port = p;
-        PortName.text = p.Name;
-        PortType.text = p.TypesToString();
+        DefaultValue dv;
 
-        DefaultValue.onEndEdit.AddListener((s) => {
-            if (s == "") {
-                // TODO Delete default value
-                p.Component.Graph.RemoveDefaultValue(p);
-            } else {
-                // TODO Check data types, if string, ok.
-                // If number, try to parse.
+        public void Setup(InPort p, NodeInfoDialog NodeInfoDialog) {
+            Port = p;
+            PortName.text = p.Name;
+            PortType.text = p.TypesToString();
 
-                if (p.Component.Graph.DefaultValuesByInPort.TryGetValue(p, out dv)) {
-                    dv.SetData(s);
+            DefaultValue.onEndEdit.AddListener((s) => {
+                if (s == "") {
+                    // TODO Delete default value
+                    p.Component.Graph.RemoveDefaultValue(p);
                 } else {
-                    p.Component.Graph.AddDefaultValue(s, p);
+                    // TODO Check data types, if string, ok.
+                    // If number, try to parse.
+
+                    if (p.Component.Graph.DefaultValuesByInPort.TryGetValue(p, out dv)) {
+                        dv.SetData(s);
+                    } else {
+                        p.Component.Graph.AddDefaultValue(s, p);
+                    }
+
                 }
+            });
 
+            if (p.Component.Graph.DefaultValuesByInPort.TryGetValue(p, out dv)) {
+                DefaultValue.text = dv.Data.ToString();
             }
-        });
 
-        if (p.Component.Graph.DefaultValuesByInPort.TryGetValue(p, out dv)) {
-            DefaultValue.text = dv.Data.ToString();
+            SelectVariable.onClick.AddListener(() => {
+                NodeInfoDialog.SelectVariableModeFor(this);
+            });
+
         }
 
-        SelectVariable.onClick.AddListener(() => {
-            NodeInfoDialog.SelectVariableModeFor(this);
-        });
+        public void Setup(Port p) {
+            PortName.text = p.Name;
+            PortType.text = p.TypesToString();
+            Port = p;
+        }
 
-    }
-
-    public void Setup(Port p) {
-        PortName.text = p.Name;
-        PortType.text = p.TypesToString();
-        Port = p;
     }
 
 }

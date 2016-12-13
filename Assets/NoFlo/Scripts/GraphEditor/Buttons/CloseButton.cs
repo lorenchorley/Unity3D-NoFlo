@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class CloseButton : MonoBehaviour {
+namespace NoFloEditor {
 
-    public GraphEditor GraphEditor;
+    public class CloseButton : MonoBehaviour {
 
-    void Start() {
-        GetComponent<Button>().onClick.AddListener(() => {
-            GraphEditor.Close();
-        });
+        public GraphEditor GraphEditor;
+
+        void Start() {
+            GetComponent<Button>().onClick.AddListener(() => {
+                GraphEditor.Close();
+            });
+        }
+
     }
-    
+
 }

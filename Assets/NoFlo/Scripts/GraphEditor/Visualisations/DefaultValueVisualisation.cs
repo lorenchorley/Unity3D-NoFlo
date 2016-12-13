@@ -1,35 +1,40 @@
-﻿using System;
+﻿using NoFlo_Basic;
+using System;
 using UnityEngine.UI;
 
-public class DefaultValueVisualisation : Visualisation {
-    
-    public DefaultValue DefaultValue;
-    public Text Text;
+namespace NoFloEditor {
 
-    void Start() {
-        Text = GetComponentInChildren<Text>();
-        UpdateData();
-    }
+    public class DefaultValueVisualisation : Visualisation {
 
-    public void SetupWithDefaultValue(DefaultValue DefaultValue) {
-        this.DefaultValue = DefaultValue;
+        public DefaultValue DefaultValue;
+        public Text Text;
 
-        if (DefaultValue.Port.Visualisation == null)
-            throw new Exception("");
+        void Start() {
+            Text = GetComponentInChildren<Text>();
+            UpdateData();
+        }
 
-        transform.position = DefaultValue.Port.Visualisation.transform.position;
-        transform.SetParent(DefaultValue.Port.Visualisation.transform);
+        public void SetupWithDefaultValue(DefaultValue DefaultValue) {
+            this.DefaultValue = DefaultValue;
 
-    }
+            if (DefaultValue.Port.Visualisation == null)
+                throw new Exception("");
 
-    public void UpdateData() {
-        Text.text = DefaultValue.Data.ToString();
-    }
+            transform.position = DefaultValue.Port.Visualisation.transform.position;
+            transform.SetParent(DefaultValue.Port.Visualisation.transform);
 
-    public override void Select() {
-    }
+        }
 
-    public override void Deselect() {
+        public void UpdateData() {
+            Text.text = DefaultValue.Data.ToString();
+        }
+
+        public override void Select() {
+        }
+
+        public override void Deselect() {
+        }
+
     }
 
 }
