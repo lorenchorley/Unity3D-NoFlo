@@ -237,7 +237,10 @@ namespace NoFloEditor {
 
             if (port.currentMessage == null) {
                 port.currentMessage = GameObject.Instantiate<GameObject>(Templates.DebugMessageTemplate).GetComponent<DebugMessageVisualisation>();
-                port.currentMessage.Setup(port.Visualisation.transform); // TODO fix InvalidOperationException
+                if (port.Visualisation != null)
+                    port.currentMessage.Setup(port.Visualisation.transform); // TODO fix InvalidOperationException
+                else
+                    port.currentMessage.gameObject.SetActive(false);
             }
             if (!port.currentMessage.gameObject.activeSelf)
                 port.currentMessage.gameObject.SetActive(true);

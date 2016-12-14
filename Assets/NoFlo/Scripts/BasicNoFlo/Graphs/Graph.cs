@@ -15,13 +15,13 @@ namespace NoFlo_Basic {
         public TextAsset GraphFile;
         public GraphExecutor PrimaryExecutor;
         public GraphExecutor DebugExecutor;
-        public UnityGraphObject[] UnityObjects;
-        public List<GraphObject> ExternalObjects;
+        //public List<UnityGraphObject> ConnectedUnityObjects;
+        //public List<GraphObject> ConnectedExternalObjects;
+        public GraphInterlink AssociatedInterlink;
 
         [NonSerialized]
         public GraphEditor GraphEditor;
 
-        public Dictionary<string, IGraphObject> VariablesByID;
         public Dictionary<string, Component> NodesByName;
         public Dictionary<InPort, DefaultValue> DefaultValuesByInPort;
         public List<Edge> Edges;
@@ -40,6 +40,12 @@ namespace NoFlo_Basic {
             if (DebugExecutor == null)
                 throw new Exception("TODO");
 
+            if (AssociatedInterlink == null)
+                AssociatedInterlink = GetComponent<GraphInterlink>();
+
+            if (AssociatedInterlink != null)
+                AssociatedInterlink.ValidateVariableConnections();
+
             CurrentExecutor = PrimaryExecutor;
 
             if (RunOnStart)
@@ -51,12 +57,12 @@ namespace NoFlo_Basic {
             if (isInitialised)
                 return;
 
-            VariablesByID = new Dictionary<string, IGraphObject>();
             NodesByName = new Dictionary<string, Component>();
             DefaultValuesByInPort = new Dictionary<InPort, DefaultValue>();
             Edges = new List<Edge>();
-            ExternalObjects = new List<GraphObject>();
-            IndexVariables();
+            //ConnectedExternalObjects = new List<GraphObject>();
+            //if (ConnectedUnityObjects == null)
+            //    ConnectedUnityObjects = new List<UnityGraphObject>();
             LoadGraphFile();
 
             isInitialised = true;
@@ -100,7 +106,11 @@ namespace NoFlo_Basic {
 
             JSONGraphFileReader.RawDefaultValue rawDefaultValueData;
             while (reader.NextDefaultValue(out rawDefaultValueData)) {
-                AddDefaultValue(DataTreatment.TreatData(rawDefaultValueData.Data, this), rawDefaultValueData.tgtProcess, rawDefaultValueData.tgtPort);
+                object treatedData = DataTreatment.TreatData(rawDefaultValueData.Data, this);
+                if (treatedData == null)
+                    continue;
+
+                AddDefaultValue(treatedData, rawDefaultValueData.tgtProcess, rawDefaultValueData.tgtPort);
             }
 
         }
@@ -130,59 +140,56 @@ namespace NoFlo_Basic {
             CurrentExecutor.StopExecution();
         }
 
+        public void ForcablyUnsubscribeAll() {
+            AssociatedInterlink.ForcablyUnsubscribeAll(this);
+        }
+
         public void Reset() {
             NodesByName.Clear();
             DefaultValuesByInPort.Clear();
             Edges.Clear();
-            VariablesByID.Clear();
         }
 
-        public bool ForcablyUnsubscribeAll() {
-            for (int i = 0; i < ExternalObjects.Count; i++) {
-                ExternalObjects[i].ForcablyUnsubscribeFromGraph(this);
-            }
-            for (int i = 0; i < UnityObjects.Length; i++) {
-                UnityObjects[i].ForcablyUnsubscribeFromGraph(this);
-            }
-            return false;
-        }
+        //public bool ForcablyUnsubscribeAll() {
+        //    //for (int i = 0; i < ConnectedExternalObjects.Count; i++) {
+        //    //    ConnectedExternalObjects[i].ForcablyUnsubscribeFromGraph(this);
+        //    //}
+        //    for (int i = 0; i < ConnectedUnityObjects.Count; i++) {
+        //        ConnectedUnityObjects[i].ForcablyUnsubscribeFromGraph(this);
+        //    }
+        //    return false;
+        //}
 
         public bool HasSubscriptions() {
-            for (int i = 0; i < ExternalObjects.Count; i++) {
-                if (ExternalObjects[i].IsSubscribedToGraph(this))
-                    return true;
-            }
-            for (int i = 0; i < UnityObjects.Length; i++) {
-                if (UnityObjects[i].IsSubscribedToGraph(this))
-                    return true;
-            }
-            return false;
+            return AssociatedInterlink.HasSubscriptions(this);
         }
 
-        public void RegisterExternalObject(GraphObject Object) {
-            if (ExternalObjects.Contains(Object))
-                throw new Exception("TODO");
+        //public bool HasSubscriptions() {
+        //    //for (int i = 0; i < ConnectedExternalObjects.Count; i++) {
+        //    //    if (ConnectedExternalObjects[i].IsSubscribedToGraph(this))
+        //    //        return true;
+        //    //}
+        //    for (int i = 0; i < ConnectedUnityObjects.Count; i++) {
+        //        if (ConnectedUnityObjects[i].IsSubscribedToGraph(this))
+        //            return true;
+        //    }
+        //    return false;
+        //}
 
-            ExternalObjects.Add(Object);
-        }
+        //public void RegisterExternalObject(GraphObject Object) {
+        //    if (ConnectedExternalObjects.Contains(Object))
+        //        throw new Exception("TODO");
 
-        public void UnregisterExternalObject(GraphObject Object) {
-            if (!ExternalObjects.Contains(Object))
-                throw new Exception("TODO");
+        //    ConnectedExternalObjects.Add(Object);
+        //}
 
-            ExternalObjects.Remove(Object);
-        }
+        //public void UnregisterExternalObject(GraphObject Object) {
+        //    if (!ConnectedExternalObjects.Contains(Object))
+        //        throw new Exception("TODO");
 
-        public void IndexVariables() {
-            if (UnityObjects == null)
-                return;
-
-            for (int i = 0; i < UnityObjects.Length; i++) {
-                IGraphObject v = UnityObjects[i];
-                VariablesByID.Add(v.GetObjectID(), v);
-            }
-        }
-
+        //    ConnectedExternalObjects.Remove(Object);
+        //}
+        
         public C AddNode<C>(string Name) where C : Component {
             C component = (C) Activator.CreateInstance(typeof(C));
             NodesByName.Add(Name, component);

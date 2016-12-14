@@ -6,12 +6,18 @@ public class DoorController : UnityGraphObject {
     public Animator Animator;
     private bool isOpen;
 
+    public Material Hightlighted;
+    private MeshRenderer Renderer;
+    private Material originalMaterial;
+
     public override string GetObjectType() {
         return "Door";
     }
 
-    void Awake() {
+    public override void Setup() {
         isOpen = false;
+        Renderer = GetComponent<MeshRenderer>();
+        originalMaterial = Renderer.material;
     }
 
     public void Toggle() {
@@ -34,6 +40,14 @@ public class DoorController : UnityGraphObject {
             isOpen = false;
             Animator.SetTrigger("Toggle");
             TriggerEvent("closed");
+        }
+    }
+
+    public override void SetHighlighted(bool enable) {
+        if (enable) {
+            Renderer.material = Hightlighted;
+        } else {
+            Renderer.material = originalMaterial;
         }
     }
 

@@ -61,7 +61,7 @@ namespace NoFloEditor {
             }
 
             InPort Port = portInfo.Port as InPort;
-            foreach (IGraphObject v in Port.Component.Graph.VariablesByID.Values) {
+            foreach (UnityGraphObject v in Port.Component.Graph.AssociatedInterlink.GetLinkedVariables()) {
 
                 // Type check
                 bool found = false;

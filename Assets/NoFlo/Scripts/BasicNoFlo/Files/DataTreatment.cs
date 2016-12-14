@@ -11,11 +11,8 @@ namespace NoFlo_Basic {
             if (Data is IDictionary) {
                 Dictionary<string, object> d = Data as Dictionary<string, object>;
                 if (d.ContainsKey("type") && d.ContainsKey("id")) {
-                    IGraphObject variable;
                     string id = d["id"] as string;
-
-                    if (!Graph.VariablesByID.TryGetValue(id, out variable))
-                        throw new Exception("Object referenced in graph " + Graph.GraphFile.name + " not present: " + id);
+                    IGraphObject variable = Graph.AssociatedInterlink.GetLinkedVariableByID(id);
 
                     if (d["type"] as string != variable.GetObjectType())
                         throw new Exception("TODO");

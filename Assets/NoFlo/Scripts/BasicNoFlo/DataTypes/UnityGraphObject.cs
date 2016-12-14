@@ -1,21 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace NoFlo_Basic {
 
-    public abstract class UnityGraphObject : MonoBehaviour, IGraphObject {
+    public abstract class UnityGraphObject : MonoBehaviour, IGraphObject, IBeginDragHandler, IDragHandler, IEndDragHandler {
 
         public string ID;
+
+        public LayerMask Mask;
 
         private List<InPort> Subscribers;
         private List<Processable> SubscribedComponents;
 
         public abstract string GetObjectType();
+        public abstract void SetHighlighted(bool enable);
+        public abstract void Setup();
 
-        public UnityGraphObject() {
+        void Awake() {
             Subscribers = new List<InPort>();
             SubscribedComponents = new List<Processable>();
+
+            if (!Mathf.IsPowerOfTwo(Mask.value))
+                throw new Exception("Select only one layer");
+
+            gameObject.layer = (int) Mathf.Log((float) Mask.value, 2f);
+
+            Setup();
         }
 
         public string GetObjectID() {
@@ -63,6 +75,28 @@ namespace NoFlo_Basic {
                 if (Subscribers[i].Component.Graph == Graph)
                     Subscribers.RemoveAt(i);
             }
+        }
+
+        void OnMouseEnter() {
+            SetHighlighted(true);
+        }
+
+        void OnMouseExit() {
+            SetHighlighted(false);
+        }
+
+        public void OnBeginDrag(PointerEventData eventData) {
+            Debug.Log("OnBeginDrag");
+        }
+
+        public void OnDrag(PointerEventData eventData) {
+            Debug.Log("OnDrag");
+
+        }
+
+        public void OnEndDrag(PointerEventData eventData) {
+            Debug.Log("OnEndDrag");
+
         }
 
     }
