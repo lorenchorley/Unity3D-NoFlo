@@ -12,8 +12,8 @@ namespace NoFloEditor {
 
         public LayerMask Mask;
 
+        public GraphEditor GraphEditor;
         public List<UnityGraphObject> ConnectedUnityObjects;
-
         public List<GraphInterlink> AssociatedLinks;
 
         public LineGraphic LineGraphicTemplate;
@@ -129,13 +129,17 @@ namespace NoFloEditor {
         }
 
         void OnMouseEnter() {
-            ShowInterconnections();
-            ShowRange();
+            if (GraphEditor == null || !GraphEditor.isOpen) { 
+                ShowInterconnections();
+                ShowRange();
+            }
         }
 
         void OnMouseExit() {
-            HideInterconnections();
-            HideRange();
+            if (GraphEditor == null || !GraphEditor.isOpen) {
+                HideInterconnections();
+                HideRange();
+            }
         }
 
         public void ShowInterconnections() {

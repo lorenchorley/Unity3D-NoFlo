@@ -14,7 +14,7 @@ public class ButtonController : UnityGraphObject {
     }
 
     public override string GetObjectType() {
-        return "Button";
+        return "Button Controller";
     }
 
     public override void SetHighlighted(bool enable) {

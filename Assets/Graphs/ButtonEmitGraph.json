@@ -30,7 +30,7 @@
     },
     {
       "data": {
-        "type": "Button",
+        "type": "Button Controller",
         "id" :  "Button2"
       },
       "tgt": {

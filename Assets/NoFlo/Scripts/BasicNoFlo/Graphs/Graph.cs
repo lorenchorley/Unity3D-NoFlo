@@ -19,6 +19,8 @@ namespace NoFlo_Basic {
         //public List<GraphObject> ConnectedExternalObjects;
         public GraphInterlink AssociatedInterlink;
 
+        public UnityEvent OnChangeExecutor;
+
         [NonSerialized]
         public GraphEditor GraphEditor;
 
@@ -47,6 +49,7 @@ namespace NoFlo_Basic {
                 AssociatedInterlink.ValidateVariableConnections();
 
             CurrentExecutor = PrimaryExecutor;
+            OnChangeExecutor.Invoke();
 
             if (RunOnStart)
                 Run();
@@ -56,6 +59,9 @@ namespace NoFlo_Basic {
         public void Init() {
             if (isInitialised)
                 return;
+
+            if (OnChangeExecutor == null)
+                OnChangeExecutor = new UnityEvent();
 
             NodesByName = new Dictionary<string, Component>();
             DefaultValuesByInPort = new Dictionary<InPort, DefaultValue>();
@@ -73,6 +79,7 @@ namespace NoFlo_Basic {
                 throw new Exception("TODO");
 
             CurrentExecutor = DebugExecutor;
+            OnChangeExecutor.Invoke();
         }
 
         public void DisableDebug() {
@@ -80,6 +87,7 @@ namespace NoFlo_Basic {
                 throw new Exception("TODO");
 
             CurrentExecutor = PrimaryExecutor;
+            OnChangeExecutor.Invoke();
         }
 
         public void LoadGraphFile() {
@@ -320,7 +328,7 @@ namespace NoFlo_Basic {
 
             DefaultValue defaultValue;
             if (!DefaultValuesByInPort.TryGetValue(Port, out defaultValue))
-                throw new Exception("");
+                throw new Exception("TODO");
 
             DefaultValuesByInPort.Remove(Port);
 

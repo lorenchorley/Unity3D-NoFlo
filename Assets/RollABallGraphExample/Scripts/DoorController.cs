@@ -11,7 +11,7 @@ public class DoorController : UnityGraphObject {
     private Material originalMaterial;
 
     public override string GetObjectType() {
-        return "Door";
+        return "Door Controller";
     }
 
     public override void Setup() {

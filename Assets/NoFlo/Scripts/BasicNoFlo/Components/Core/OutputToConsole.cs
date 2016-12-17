@@ -21,7 +21,7 @@ namespace NoFlo_Basic {
             Input.AddPort(new InPort() {
                 Name = "In",
                 Description = "The string to output to the console",
-                Types = new Type[] { typeof(object) },
+                Types = new string[] { "All" },
                 ProcessConnection = (OutPort otherPort) => {
                 },
                 ProcessDisconnection = (OutPort otherPort) => {
@@ -31,7 +31,7 @@ namespace NoFlo_Basic {
             Output.AddPort(new OutPort() {
                 Name = "PassOn",
                 Description = "The same string immediately passed on",
-                Types = new Type[] { typeof(string) },
+                Types = new string[] { "Text" },
                 ProcessConnection = (InPort otherPort) => {
                 },
                 ProcessDisconnection = (InPort otherPort) => {

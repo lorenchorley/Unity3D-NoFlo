@@ -26,7 +26,7 @@ namespace NoFlo_Basic {
             Input.AddPort(new InPort() {
                 Name = "Delimiter",
                 Description = "The delimiter to use to separate the string",
-                Types = new Type[] { typeof(string) },
+                Types = new string[] { "Text" },
                 ProcessConnection = (OutPort otherPort) => {
                 },
                 ProcessDisconnection = (OutPort otherPort) => {
@@ -35,7 +35,7 @@ namespace NoFlo_Basic {
             Input.AddPort(new InPort() {
                 Name = "String",
                 Description = "The string to split",
-                Types = new Type[] { typeof(string) },
+                Types = new string[] { "Text" },
                 ProcessConnection = (OutPort otherPort) => {
                 },
                 ProcessDisconnection = (OutPort otherPort) => {
@@ -45,7 +45,7 @@ namespace NoFlo_Basic {
             Output.AddPort(new OutPort() {
                 Name = "Out",
                 Description = "The combination of the two inputed strings",
-                Types = new Type[] { typeof(string) },
+                Types = new string[] { "Text" },
                 ProcessConnection = (InPort otherPort) => {
                 },
                 ProcessDisconnection = (InPort otherPort) => {

@@ -25,7 +25,7 @@ namespace NoFlo_Basic {
             EventNamePort = Input.AddPort(new InPort() {
                 Name = "EventName",
                 Description = "The name of the event",
-                Types = new Type[] { typeof(string) },
+                Types = new string[] { "Text" },
                 ProcessConnection = (OutPort otherPort) => {
                 },
                 ProcessDisconnection = (OutPort otherPort) => {
@@ -35,7 +35,7 @@ namespace NoFlo_Basic {
             DataPort = Input.AddPort(new InPort() {
                 Name = "Data",
                 Description = "The data to send with the event",
-                Types = new Type[] { typeof(object) },
+                Types = new string[] { "All" },
                 ProcessConnection = (OutPort otherPort) => {
                 },
                 ProcessDisconnection = (OutPort otherPort) => {

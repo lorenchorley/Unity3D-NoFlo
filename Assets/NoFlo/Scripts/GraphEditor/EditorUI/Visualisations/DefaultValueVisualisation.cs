@@ -10,7 +10,8 @@ namespace NoFloEditor {
         public Text Text;
 
         void Start() {
-            Text = GetComponentInChildren<Text>();
+            if (Text == null)
+                Text = GetComponentInChildren<Text>();
             UpdateData();
         }
 
@@ -18,7 +19,7 @@ namespace NoFloEditor {
             this.DefaultValue = DefaultValue;
 
             if (DefaultValue.Port.Visualisation == null)
-                throw new Exception("");
+                throw new Exception("TODO");
 
             transform.position = DefaultValue.Port.Visualisation.transform.position;
             transform.SetParent(DefaultValue.Port.Visualisation.transform);
@@ -26,7 +27,7 @@ namespace NoFloEditor {
         }
 
         public void UpdateData() {
-            Text.text = DefaultValue.Data.ToString();
+            Text.text = DataTreatment.GetDataRepresentative(DefaultValue.Data);
         }
 
         public override void Select() {

@@ -99,6 +99,10 @@ namespace NoFlo_Basic {
 
         }
 
+        public override string ToString() {
+            return ID;
+        }
+
     }
 
 }

@@ -41,7 +41,7 @@ namespace NoFlo_Basic {
             ButtonPort = Input.AddPort(new InPort() {
                 Name = "Button",
                 Description = "The button to be monitored",
-                Types = new Type[] { typeof(ButtonController) },
+                Types = new string[] { "Button Controller" },
                 ProcessConnection = (OutPort otherPort) => {
                 },
                 ProcessDisconnection = (OutPort otherPort) => {
@@ -50,7 +50,7 @@ namespace NoFlo_Basic {
             ButtonEventsPort = Input.AddPort(new InPort() {
                 Name = "ButtonEvents",
                 Description = "This port receives events from the subscribed button",
-                Types = new Type[] { typeof(Kick) },
+                Types = new string[] { "Kick" },
                 ProcessConnection = (OutPort otherPort) => {
                 },
                 ProcessDisconnection = (OutPort otherPort) => {
@@ -61,7 +61,7 @@ namespace NoFlo_Basic {
             OnPressPort = Output.AddPort(new OutPort() {
                 Name = "OnPress",
                 Description = "Sends a kick when the button is pressed",
-                Types = new Type[] { typeof(Kick) },
+                Types = new string[] { "Kick" },
                 ProcessConnection = (InPort otherPort) => {
                 },
                 ProcessDisconnection = (InPort otherPort) => {

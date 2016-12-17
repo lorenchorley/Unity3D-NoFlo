@@ -8,7 +8,7 @@ namespace NoFlo_Basic {
 
         public string Name;
         public string Description;
-        public Type[] Types;
+        public string[] Types;
         public bool Hidden;
 
         public Component Component;
@@ -31,10 +31,10 @@ namespace NoFlo_Basic {
             for (int i = 0; i < Types.Length; i++) {
                 if (i != 0)
                     types += ", ";
-                if (Types[i] == typeof(object)) {
+                if (Types[i] == "All") {
                     return "All";
                 } else {
-                    types += Types[i].Name;
+                    types += Types[i];
                 }
             }
             return types;

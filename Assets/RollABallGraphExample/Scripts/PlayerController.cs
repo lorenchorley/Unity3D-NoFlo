@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using NoFloEditor;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 	
 	public float speed;
 
-	private Rigidbody rb;
+    private Rigidbody rb;
 
 	void Start ()
 	{

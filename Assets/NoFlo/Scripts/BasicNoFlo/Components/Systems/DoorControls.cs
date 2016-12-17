@@ -49,7 +49,7 @@ namespace NoFlo_Basic {
             DoorPort = Input.AddPort(new InPort() {
                 Name = "Door",
                 Description = "The controller of the door to be used",
-                Types = new Type[] { typeof(DoorController) },
+                Types = new string[] { "Door Controller" },
                 ProcessConnection = (OutPort otherPort) => {
                 },
                 ProcessDisconnection = (OutPort otherPort) => {
@@ -58,7 +58,7 @@ namespace NoFlo_Basic {
             TogglePort = Input.AddPort(new InPort() {
                 Name = "Toggle",
                 Description = "On receiving any input to this port, the door's state will be toggled",
-                Types = new Type[] { typeof(object) },
+                Types = new string[] { "All" },
                 ProcessConnection = (OutPort otherPort) => {
                 },
                 ProcessDisconnection = (OutPort otherPort) => {
@@ -67,7 +67,7 @@ namespace NoFlo_Basic {
             DoorEventsPort = Input.AddPort(new InPort() {
                 Name = "DoorEventsPort",
                 Description = "On receiving any input to this port, the door's state will be toggled",
-                Types = new Type[] { typeof(object) },
+                Types = new string[] { "All" },
                 ProcessConnection = (OutPort otherPort) => {
                 },
                 ProcessDisconnection = (OutPort otherPort) => {
@@ -78,7 +78,7 @@ namespace NoFlo_Basic {
             StatePort = Output.AddPort(new OutPort() {
                 Name = "State",
                 Description = "The state of the door is sent on when changed as Opened or Closed",
-                Types = new Type[] { typeof(string) },
+                Types = new string[] { "Text" },
                 ProcessConnection = (InPort otherPort) => {
                 },
                 ProcessDisconnection = (InPort otherPort) => {

@@ -7,7 +7,7 @@ namespace NoFloEditor {
 
         private List<LinePointUpdater> Updaters;
 
-        void Awake() {
+        public LinePointManager() {
             Updaters = new List<LinePointUpdater>();
         }
 

@@ -14,8 +14,8 @@ namespace NoFlo_Basic {
 
         public void SetData(object Data) {
             this.Data = Data;
-            if (Visualisation != null)
-                Visualisation.UpdateData();
+            //if (Visualisation != null)
+            //    Visualisation.UpdateData();
         }
 
     }

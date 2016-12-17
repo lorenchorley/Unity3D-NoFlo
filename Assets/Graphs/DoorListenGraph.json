@@ -12,7 +12,7 @@
     "ListenForEvent": {
       "component": "events/ListenForEvent",
       "metadata": {
-        "x": 150,
+        "x": -150,
         "y": 0
       }
     }
@@ -30,7 +30,7 @@
     },
     {
       "data": {
-        "type": "Door",
+        "type": "Door Controller",
         "id" :  "Door1"
       },
       "tgt": {

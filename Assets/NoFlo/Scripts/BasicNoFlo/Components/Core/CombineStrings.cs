@@ -21,7 +21,7 @@ namespace NoFlo_Basic {
             Input.AddPort(new InPort() {
                 Name = "First",
                 Description = "The string to output to the console",
-                Types = new Type[] { typeof(string) },
+                Types = new string[] { "Text" },
                 ProcessConnection = (OutPort otherPort) => {
                 },
                 ProcessDisconnection = (OutPort otherPort) => {
@@ -30,7 +30,7 @@ namespace NoFlo_Basic {
             Input.AddPort(new InPort() {
                 Name = "Second",
                 Description = "The string to output to the console",
-                Types = new Type[] { typeof(string) },
+                Types = new string[] { "Text" },
                 ProcessConnection = (OutPort otherPort) => {
                 },
                 ProcessDisconnection = (OutPort otherPort) => {
@@ -40,7 +40,7 @@ namespace NoFlo_Basic {
             Output.AddPort(new OutPort() {
                 Name = "Out",
                 Description = "The combination of the two inputed strings",
-                Types = new Type[] { typeof(string) },
+                Types = new string[] { "Text" },
                 ProcessConnection = (InPort otherPort) => {
                 },
                 ProcessDisconnection = (InPort otherPort) => {

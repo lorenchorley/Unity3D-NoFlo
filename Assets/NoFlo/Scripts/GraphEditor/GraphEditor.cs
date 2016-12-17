@@ -13,6 +13,10 @@ namespace NoFloEditor {
         [NonSerialized]
         public Graph CurrentGraph;
 
+        public bool StartClosed = true;
+        public bool isOpen { get; private set; }
+        public PlayerController PlayerController;
+
         public RectTransform GraphRenderingPanel;
 
         [Serializable]
@@ -74,11 +78,15 @@ namespace NoFloEditor {
         public UIEvents EventOptions;
 
         public void Open(Graph Graph) {
+            if (isOpen)
+                throw new Exception("TODO");
+
+            isOpen = true;
+            gameObject.SetActive(true);
+
             CurrentGraph = Graph;
             Graph.GraphEditor = this;
             Graph.Init();
-
-            gameObject.SetActive(true);
 
             Buttons.AddNode.SetGraph(Graph);
             Buttons.Remove.SetGraph(Graph);
@@ -92,11 +100,16 @@ namespace NoFloEditor {
             Graph.DebugExecutor.OnStop.AddListener(HandleEndExecution);
 
             RenderGraph(Graph, GraphRenderingPanel);
+
         }
 
         public void Close() {
+            if (!isOpen)
+                throw new Exception("TODO");
+
             Deselect();
             ResetEditorPanel();
+            isOpen = false;
             gameObject.SetActive(false);
         }
 
@@ -403,6 +416,9 @@ namespace NoFloEditor {
 
         void Awake() {
 
+            isOpen = !StartClosed;
+            gameObject.SetActive(isOpen);
+
             SetupEventHandlers();
 
             Buttons.AddNode.GraphEditor = this;
@@ -521,7 +537,8 @@ namespace NoFloEditor {
             obj.Select();
             selected = obj;
 
-            if (obj is NodeVisualisation) { 
+            if (obj is NodeVisualisation) {
+                NodeInfoDialog.GraphEditor = this;
                 NodeInfoDialog.gameObject.SetActive(true);
                 NodeInfoDialog.SetNode((obj as NodeVisualisation).Component);
             }

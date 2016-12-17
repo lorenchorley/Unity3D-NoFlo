@@ -91,7 +91,7 @@
     },
     {
       "data": {
-        "type": "Door",
+        "type": "Door Controller",
         "id" :  "Door1"
       },
       "tgt": {
@@ -108,7 +108,7 @@
     },
     {
       "data": {
-        "type": "Button",
+        "type": "Button Controller",
         "id" :  "Button1"
       },
       "tgt": {
