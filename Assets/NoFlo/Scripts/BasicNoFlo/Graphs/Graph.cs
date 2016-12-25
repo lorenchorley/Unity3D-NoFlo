@@ -15,8 +15,6 @@ namespace NoFlo_Basic {
         public TextAsset GraphFile;
         public GraphExecutor PrimaryExecutor;
         public GraphExecutor DebugExecutor;
-        //public List<UnityGraphObject> ConnectedUnityObjects;
-        //public List<GraphObject> ConnectedExternalObjects;
         public GraphInterlink AssociatedInterlink;
 
         public UnityEvent OnChangeExecutor;
@@ -30,7 +28,8 @@ namespace NoFlo_Basic {
 
         public GraphExecutor CurrentExecutor { get; private set; }
 
-        protected bool isInitialised = false;
+        protected bool initialised = false;
+        private bool doneFirstRun = false;
 
         void Awake() {
             Init();
@@ -48,16 +47,18 @@ namespace NoFlo_Basic {
             if (AssociatedInterlink != null)
                 AssociatedInterlink.ValidateVariableConnections();
 
-            CurrentExecutor = PrimaryExecutor;
-            OnChangeExecutor.Invoke();
-
-            if (RunOnStart)
-                Run();
+            if (RunOnStart && !HasDoneFirstRun())
+                if (GraphEditor == null || GraphEditor.StartClosed || GraphEditor.CurrentGraph != this)
+                    RunGraph();
 
         }
 
+        public bool IsInitialised() {
+            return initialised;
+        }
+
         public void Init() {
-            if (isInitialised)
+            if (initialised)
                 return;
 
             if (OnChangeExecutor == null)
@@ -66,12 +67,13 @@ namespace NoFlo_Basic {
             NodesByName = new Dictionary<string, Component>();
             DefaultValuesByInPort = new Dictionary<InPort, DefaultValue>();
             Edges = new List<Edge>();
-            //ConnectedExternalObjects = new List<GraphObject>();
-            //if (ConnectedUnityObjects == null)
-            //    ConnectedUnityObjects = new List<UnityGraphObject>();
+
             LoadGraphFile();
 
-            isInitialised = true;
+            CurrentExecutor = PrimaryExecutor;
+            OnChangeExecutor.Invoke();
+
+            initialised = true;
         }
 
         public void EnableDebug() {
@@ -91,6 +93,7 @@ namespace NoFlo_Basic {
         }
 
         public void LoadGraphFile() {
+            Dictionary<string, Type> ComponentsByQualifiedName = ComponentCatalog.RequestComponentsByQualifiedName();
 
             // Populate graph with nodes, edges and default vaules
             JSONGraphFileReader reader = new JSONGraphFileReader(GraphFile.text);
@@ -99,8 +102,8 @@ namespace NoFlo_Basic {
             while (reader.NextNode(out rawNodeData)) {
                 Type componentType;
 
-                if (!ComponentCatalog.RequestComponentsByQualifiedName().TryGetValue(rawNodeData.QualifiedComponentName, out componentType))
-                    throw new Exception("TODO");
+                if (!ComponentsByQualifiedName.TryGetValue(rawNodeData.QualifiedComponentName, out componentType))
+                    throw new Exception("No component available with name: " + rawNodeData.QualifiedComponentName);
 
                 Component c = AddNode(rawNodeData.Name, componentType);
                 c.MetadataPosition = rawNodeData.metadataPosition;
@@ -123,7 +126,16 @@ namespace NoFlo_Basic {
 
         }
 
-        public void Run() {
+        public bool HasDoneFirstRun() {
+            return doneFirstRun;
+        }
+
+        public void RunGraph() {
+            if (RunOnStart && !doneFirstRun)
+                doneFirstRun = true;
+
+            Debug.Log("RunGraph");
+
             CurrentExecutor.StartExecution();
             CurrentExecutor.ExecuteGraph(this);
         }
@@ -172,6 +184,10 @@ namespace NoFlo_Basic {
             return AssociatedInterlink.HasSubscriptions(this);
         }
 
+        public bool HasDelayedExecution() {
+            return gameObject.GetComponents<DelayedCallback>().Length > 0; // TODO find more efficient way to do this
+        }
+
         //public bool HasSubscriptions() {
         //    //for (int i = 0; i < ConnectedExternalObjects.Count; i++) {
         //    //    if (ConnectedExternalObjects[i].IsSubscribedToGraph(this))
@@ -197,7 +213,7 @@ namespace NoFlo_Basic {
 
         //    ConnectedExternalObjects.Remove(Object);
         //}
-        
+
         public C AddNode<C>(string Name) where C : Component {
             C component = (C) Activator.CreateInstance(typeof(C));
             NodesByName.Add(Name, component);

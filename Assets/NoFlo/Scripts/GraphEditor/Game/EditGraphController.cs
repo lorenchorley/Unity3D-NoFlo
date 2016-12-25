@@ -27,20 +27,22 @@ namespace NoFloEditor {
         void OnMouseOver() {
             if (Input.GetMouseButtonUp(0) && !GraphEditor.isOpen) {
                 GraphEditor.Open(Graph);
+                AssociatedInterlink.HideInterconnections();
+                AssociatedInterlink.HideRange();
             }
         }
 
         public void UpdateListeners() {
             if (Graph != null) {
                 Graph.OnChangeExecutor.AddListener(OnChangeExecutor);
-                Graph.DebugExecutor.OnStart.AddListener(OnGraphStart);
-                Graph.DebugExecutor.OnStop.AddListener(OnGraphStop);
-                Graph.DebugExecutor.OnIdle.AddListener(OnGraphIdle);
-                Graph.DebugExecutor.OnResume.AddListener(OnGraphStart);
-                Graph.PrimaryExecutor.OnStart.AddListener(OnGraphStart);
-                Graph.PrimaryExecutor.OnStop.AddListener(OnGraphStop);
-                Graph.PrimaryExecutor.OnIdle.AddListener(OnGraphIdle);
-                Graph.PrimaryExecutor.OnResume.AddListener(OnGraphStart);
+                Graph.DebugExecutor.Events.OnStart.AddListener(OnGraphStart);
+                Graph.DebugExecutor.Events.OnStop.AddListener(OnGraphStop);
+                Graph.DebugExecutor.Events.OnIdle.AddListener(OnGraphIdle);
+                Graph.DebugExecutor.Events.OnResume.AddListener(OnGraphStart);
+                Graph.PrimaryExecutor.Events.OnStart.AddListener(OnGraphStart);
+                Graph.PrimaryExecutor.Events.OnStop.AddListener(OnGraphStop);
+                Graph.PrimaryExecutor.Events.OnIdle.AddListener(OnGraphIdle);
+                Graph.PrimaryExecutor.Events.OnResume.AddListener(OnGraphStart);
             }
         }
 

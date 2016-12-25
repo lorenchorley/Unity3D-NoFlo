@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NoFlo_Basic {
 
-    public class InThreadDebugGraphExecutor : GraphExecutor {
+    public class InThreadGraphExecutor : GraphExecutor {
 
         private enum ExecutorState {
             Stopped,
@@ -11,9 +11,7 @@ namespace NoFlo_Basic {
             ProcessingTasks,
             QueuingTasks,
         }
-
-        public float DebugDelay = 1;
-
+        
         ExecutorState state;
         Queue<InPort> DefaultPortQueue;
         Processable p;
@@ -129,8 +127,8 @@ namespace NoFlo_Basic {
                         p = null;
                     }
 
-                    // Repeat loop after delay
-                    Invoke("Loop", DebugDelay);
+                    // Repeat loop
+                    Loop();
 
                 } else if (context.tasksEnumerator.MoveNext()) {
 
@@ -140,8 +138,8 @@ namespace NoFlo_Basic {
                     // Highlight the node
                     p.DebugHighlight();
 
-                    // Repeat loop after delay
-                    Invoke("Loop", DebugDelay);
+                    // Repeat loop 
+                    Loop();
 
                 } else { // Finished with the current tasks
 

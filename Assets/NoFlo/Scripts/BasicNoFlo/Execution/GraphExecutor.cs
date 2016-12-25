@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,10 +7,14 @@ namespace NoFlo_Basic {
 
     public abstract class GraphExecutor : MonoBehaviour {
 
-        public UnityEvent OnStart;
-        public UnityEvent OnStop;
-        public UnityEvent OnIdle;
-        public UnityEvent OnResume;
+        [Serializable]
+        public class ExecutorEvents {
+            public UnityEvent OnStart;
+            public UnityEvent OnStop;
+            public UnityEvent OnIdle;
+            public UnityEvent OnResume;
+        }
+        public ExecutorEvents Events;
 
         protected Graph Graph;
         protected bool isInitialised = false;
@@ -17,11 +22,13 @@ namespace NoFlo_Basic {
         protected abstract void _Setup();
         protected abstract void _Stop();
         protected abstract void _ExecuteGraph(Graph Graph);
+        protected abstract void _ContinueExecutionOn(Processable tasks);
         protected abstract void _ContinueExecutionOn(List<Processable> tasks);
         public abstract bool IsRunningGraph(Graph Graph);
         public abstract bool IsIdle();
         public abstract bool IsExecuting();
         public abstract bool IsStopped();
+        public abstract ExecutionContext GetExecutionContext();
 
         void Awake() {
             StartExecution();
@@ -38,25 +45,35 @@ namespace NoFlo_Basic {
 
         public void StopExecution() {
             _Stop();
-            if (OnStop != null)
-                OnStop.Invoke();
+            if (Events.OnStop != null)
+                Events.OnStop.Invoke();
         }
 
         public void ExecuteGraph(Graph Graph) {
             this.Graph = Graph;
 
-            if (OnStart != null)
-                OnStart.Invoke();
+            if (Events.OnStart != null)
+                Events.OnStart.Invoke();
 
             _ExecuteGraph(Graph);
+        }
+
+        public void ContinueExecution(Processable task) {
+            if (IsStopped())
+                throw new System.Exception("Cannot continue execution on graph that is not running");
+
+            if (Events.OnResume != null && IsIdle())
+                Events.OnResume.Invoke();
+
+            _ContinueExecutionOn(task);
         }
 
         public void ContinueExecution(List<Processable> tasks) {
             if (IsStopped())
                 throw new System.Exception("Cannot continue execution on graph that is not running");
 
-            if (OnResume != null && IsIdle())
-                OnResume.Invoke();
+            if (Events.OnResume != null && IsIdle())
+                Events.OnResume.Invoke();
 
             _ContinueExecutionOn(tasks);
         }

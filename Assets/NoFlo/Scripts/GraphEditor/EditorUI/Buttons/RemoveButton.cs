@@ -20,8 +20,8 @@ namespace NoFloEditor {
             }
 
             GetComponent<Button>().onClick.AddListener(() => {
-                if (MouseManager.selected != null && MouseManager.selected is NodeVisualisation)
-                    Graph.RemoveNode((MouseManager.selected as NodeVisualisation).Component);
+                if (MouseManager.SelectedVisualisation != null && MouseManager.SelectedVisualisation is NodeVisualisation)
+                    Graph.RemoveNode((MouseManager.SelectedVisualisation as NodeVisualisation).Component);
             });
 
         }

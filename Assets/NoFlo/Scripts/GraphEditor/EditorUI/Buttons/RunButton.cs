@@ -20,7 +20,7 @@ namespace NoFloEditor {
             GetComponent<Button>().onClick.AddListener(() => {
                 if (Text.text == "Run") {
                     Graph.DisableDebug();
-                    Graph.Run();
+                    Graph.RunGraph();
                     Text.text = "Stop";
                 } else {
                     Graph.ForceStop();
@@ -42,7 +42,7 @@ namespace NoFloEditor {
                 Text.text = "Run";
             }
 
-            Graph.PrimaryExecutor.OnStop.AddListener(() => {
+            Graph.PrimaryExecutor.Events.OnStop.AddListener(() => {
                 Text.text = "Run";
             });
 

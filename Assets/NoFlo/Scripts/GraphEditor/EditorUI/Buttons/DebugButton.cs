@@ -22,7 +22,7 @@ namespace NoFloEditor {
                     Text.text = "Stop";
 
                     Graph.EnableDebug();
-                    Graph.Run();
+                    Graph.RunGraph();
 
                 } else {
                     Graph.ForceStop();
@@ -44,7 +44,7 @@ namespace NoFloEditor {
                 Text.text = "Debug";
             }
 
-            Graph.DebugExecutor.OnStop.AddListener(() => {
+            Graph.DebugExecutor.Events.OnStop.AddListener(() => {
                 Text.text = "Debug";
             });
 

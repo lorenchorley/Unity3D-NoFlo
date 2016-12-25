@@ -40,8 +40,10 @@ namespace NoFloEditor {
             SubscribersByEventName = new Dictionary<string, List<InPort>>();
             SubscribedComponents = new List<Processable>();
 
-            RangeDoodad = GameObject.Instantiate<GameObject>(RangeDoodadTemplate);
-            RangeDoodad.gameObject.SetActive(false);
+            if (RangeDoodadTemplate != null) { 
+                RangeDoodad = GameObject.Instantiate<GameObject>(RangeDoodadTemplate);
+                RangeDoodad.gameObject.SetActive(false);
+            }
 
             if (!Mathf.IsPowerOfTwo(Mask.value))
                 throw new Exception("Select only one layer");
@@ -129,7 +131,7 @@ namespace NoFloEditor {
         }
 
         void OnMouseEnter() {
-            if (GraphEditor == null || !GraphEditor.isOpen) { 
+            if ((GraphEditor == null || !GraphEditor.isOpen) && Cursor.visible) { 
                 ShowInterconnections();
                 ShowRange();
             }
@@ -181,13 +183,16 @@ namespace NoFloEditor {
         }
 
         public void ShowRange() {
-            RangeDoodad.gameObject.SetActive(true);
-            RangeDoodad.transform.position = transform.position;
-            RangeDoodad.transform.localScale = Vector3.one * ConnectionRange;
+            if (RangeDoodad != null) {
+                RangeDoodad.gameObject.SetActive(true);
+                RangeDoodad.transform.position = transform.position;
+                RangeDoodad.transform.localScale = Vector3.one * ConnectionRange;
+            }
         }
 
         public void HideRange() {
-            RangeDoodad.SetActive(false);
+            if (RangeDoodad != null)
+                RangeDoodad.SetActive(false);
         }
 
         public void ValidateVariableConnections() {

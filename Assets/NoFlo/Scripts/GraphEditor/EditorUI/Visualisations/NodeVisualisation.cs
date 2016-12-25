@@ -25,10 +25,7 @@ namespace NoFloEditor {
         public class SelectionOptions {
             public Image Image;
             public Color Selected;
-
-            [NonSerialized]
-            public Color Unhighlighted;
-
+            public Color Unselected;
         }
         public SelectionOptions Selection;
 
@@ -40,9 +37,7 @@ namespace NoFloEditor {
         public DebugOptions Debug;
 
         void Start() {
-            //RectTransform rect = GetComponent<RectTransform>();
-            //rect.sizeDelta = new Vector2(100,50);
-            Selection.Unhighlighted = Selection.Image.color;
+            Selection.Image.color = Selection.Unselected;
         }
 
         public override void Select() {
@@ -50,11 +45,11 @@ namespace NoFloEditor {
         }
 
         public override void Deselect() {
-            Selection.Image.color = Selection.Unhighlighted;
+            Selection.Image.color = Selection.Unselected;
         }
 
         public void DebugHighlight(bool enable) {
-            Selection.Image.color = enable ? Debug.Highlighted : Selection.Unhighlighted;
+            Selection.Image.color = enable ? Debug.Highlighted : Selection.Unselected;
         }
 
         public void SetName(string name) {
